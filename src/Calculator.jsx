@@ -7,47 +7,47 @@ const Calculator = () => {
   const images = [
     {
       name: "Barbara",
-      src: "/src/assets/barbara.jpg",
+      src: "/public/assets/barbara.jpg",
       src_flask: "./assets/barbara.jpg",
     },
     {
       name: "Boat",
-      src: "/src/assets/boat.jpg",
+      src: "/public/assets/boat.jpg",
       src_flask: "./assets/boat.jpg",
     },
     {
       name: "Clock",
-      src: "/src/assets/clock.jpg",
+      src: "/public/assets/clock.jpg",
       src_flask: "./assets/clock.jpg",
     },
     {
       name: "Elaine",
-      src: "/src/assets/elaine.jpg",
+      src: "/public/assets/elaine.jpg",
       src_flask: "./assets/elaine.jpg",
     },
     {
       name: "Goldhill",
-      src: "/src/assets/goldhill.jpg",
+      src: "/public/assets/goldhill.jpg",
       src_flask: "./assets/goldhill.jpg",
     },
     {
       name: "Lena",
-      src: "/src/assets/lena.jpg",
+      src: "/public/assets/lena.jpg",
       src_flask: "./assets/lena.jpg",
     },
     {
       name: "Mandril",
-      src: "/src/assets/mandril.jpg",
+      src: "/public/assets/mandril.jpg",
       src_flask: "./assets/mandril.jpg",
     },
     {
       name: "Peppers",
-      src: "/src/assets/peppers.jpg",
+      src: "/public/assets/peppers.jpg",
       src_flask: "./assets/peppers.jpg",
     },
     {
       name: "Tiffany",
-      src: "/src/assets/tiffany.jpg",
+      src: "/public/assets/tiffany.jpg",
       src_flask: "./assets/tiffany.jpg",
     },
   ];
@@ -169,16 +169,16 @@ const Calculator = () => {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:5000/api/test")
-      .then((response) => {
-        console.log(response.data.message);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar dados:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://127.0.0.1:5000/api/test")
+  //     .then((response) => {
+  //       console.log(response.data.message);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Erro ao buscar dados:", error);
+  //     });
+  // }, []);
 
   return (
     <div>
