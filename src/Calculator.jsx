@@ -1,0 +1,259 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+const Calculator = () => {
+  // Base de dados de imagens clássicas
+
+  const images = [
+    {
+      name: "Barbara",
+      src: "/src/assets/barbara.jpg",
+      src_flask: "./assets/barbara.jpg",
+    },
+    {
+      name: "Boat",
+      src: "/src/assets/boat.jpg",
+      src_flask: "./assets/boat.jpg",
+    },
+    {
+      name: "Clock",
+      src: "/src/assets/clock.jpg",
+      src_flask: "./assets/clock.jpg",
+    },
+    {
+      name: "Elaine",
+      src: "/src/assets/elaine.jpg",
+      src_flask: "./assets/elaine.jpg",
+    },
+    {
+      name: "Goldhill",
+      src: "/src/assets/goldhill.jpg",
+      src_flask: "./assets/goldhill.jpg",
+    },
+    {
+      name: "Lena",
+      src: "/src/assets/lena.jpg",
+      src_flask: "./assets/lena.jpg",
+    },
+    {
+      name: "Mandril",
+      src: "/src/assets/mandril.jpg",
+      src_flask: "./assets/mandril.jpg",
+    },
+    {
+      name: "Peppers",
+      src: "/src/assets/peppers.jpg",
+      src_flask: "./assets/peppers.jpg",
+    },
+    {
+      name: "Tiffany",
+      src: "/src/assets/tiffany.jpg",
+      src_flask: "./assets/tiffany.jpg",
+    },
+  ];
+
+  // Base de Dados de Coeficientes
+
+  const coeffs = [
+    { amount: 1 },
+    { amount: 3 },
+    { amount: 5 },
+    { amount: 10 },
+    { amount: 20 },
+  ];
+
+  // Base de Dados de Tamanho de Bloco
+
+  const block_sizes = [
+    { size: 4, label: "4x4" },
+    { size: 8, label: "8x8" },
+    { size: 10, label: "16x16" },
+    { size: 20, label: "32x32" },
+    { size: 128, label: "128x128" },
+    { size: 256, label: "256x256" },
+  ];
+
+  // Variáveis
+
+  const [image, setImage] = useState(images[0]);
+  const [compressedImage, setCompressedImage] = useState(null);
+  const [amountOfCoeffs, setAmountOfCoeffs] = useState(coeffs[0].amount);
+  const [blockSize, setBlockSize] = useState(block_sizes[0].size);
+  const [mse, setMse] = useState("");
+  const [ssim, setSsim] = useState("");
+  const [psnr, setPsnr] = useState("");
+
+  // Função para selecionar a imagem a sofrer compressão
+
+  const handleImageChange = (event) => {
+    const selectedName = event.target.value;
+    const selectedImage = images.find((image) => image.name === selectedName);
+    setCompressedImage("");
+    setImage(selectedImage ? selectedImage : images[0]);
+  };
+
+  // Função para selecionar a quantidade de coeficientes a serem mantidos
+
+  const handleKeepCoeffsChange = (event) => {
+    const selectedAmountOfCoeffs = parseInt(event.target.value);
+    const selectedCoeffs = coeffs.find(
+      (coeff) => coeff.amount === selectedAmountOfCoeffs
+    );
+    setAmountOfCoeffs(selectedCoeffs.amount);
+  };
+
+  const handleBlockSizeChange = (event) => {
+    const selectedBlockSize = parseInt(event.target.value);
+    const selectedBlockSizeFilter = block_sizes.find(
+      (block_size) => block_size.size === selectedBlockSize
+    );
+    setBlockSize(selectedBlockSizeFilter.size);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!image) {
+      alert("Por favor, selecione uma imagem.");
+      return;
+    }
+
+    if (amountOfCoeffs > blockSize * blockSize) {
+      alert(
+        "Por favor, selecione um valor de coeficientes menor do que " +
+          blockSize * blockSize
+      );
+      return;
+    }
+
+    console.log(image);
+    console.log(amountOfCoeffs);
+    console.log(blockSize);
+
+    try {
+      const imageResponse = await axios.post(
+        "http://127.0.0.1:5000/calculate",
+        {
+          image: image.src_flask,
+          amount_of_coeffs: amountOfCoeffs,
+          block_size: blockSize,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          responseType: "blob",
+        }
+      );
+      // Sucesso
+      const imageUrl = URL.createObjectURL(imageResponse.data);
+      setCompressedImage(imageUrl);
+    } catch (error) {
+      console.error("Erro ao enviar a imagem:", error.message);
+    }
+
+    try {
+      const metricsResponse = await axios.post(
+        "http://127.0.0.1:5000/get_metrics",
+        {
+          image: image.src_flask,
+          amount_of_coeffs: amountOfCoeffs,
+          block_size: blockSize,
+        }
+      );
+      console.log(metricsResponse.data.mse);
+      setMse(metricsResponse.data.mse.toFixed(2));
+      setSsim(metricsResponse.data.ssim.toFixed(2));
+      setPsnr(metricsResponse.data.psnr.toFixed(2));
+    } catch (error) {
+      console.error("Erro ao enviar a imagem:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:5000/api/test")
+      .then((response) => {
+        console.log(response.data.message);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      });
+  }, []);
+
+  return (
+    <div>
+      {/* HEADER */}
+      <h2 className="title">Transformada DCT</h2>
+      <h4 className="subheader">
+        Uma ferramenta para visualizar a ação da transformada DCT na compressão
+        de imagens!
+      </h4>
+
+      {/* SELECTION OF PARAMETERS */}
+      <form className="user-params">
+        <div className="image-selection">
+          <p>Selecione a imagem</p>
+          <select onChange={handleImageChange}>
+            {images.map((image) => (
+              <option key={image.name} value={image.name}>
+                {image.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="image-selection">
+          <p>Quantidade de Coeficientes</p>
+          <select onChange={handleKeepCoeffsChange}>
+            {coeffs.map((coeff) => (
+              <option key={coeff.amount} value={coeff.amount}>
+                {coeff.amount}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="image-selection">
+          <p>Tamanho do Bloco</p>
+          <select onChange={handleBlockSizeChange}>
+            {block_sizes.map((block_size) => (
+              <option key={block_size.size} value={block_size.size}>
+                {block_size.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="image-selection">
+          <p>Confirmar</p>
+          <button onClick={handleSubmit}>Comprimir Imagem</button>
+        </div>
+      </form>
+
+      {/* PREVIEW */}
+      <div className="compress">
+        <div className="original">
+          <h4>Imagem Original</h4>
+          <img className="original-image" src={image.src} alt="" />
+        </div>
+        <div className="compressed">
+          <h4>Imagem com Compressão</h4>
+          {compressedImage ? (
+            <img src={compressedImage} alt="compressed-image" />
+          ) : (
+            <div
+              style={{ background: "#fafafa", width: "256px", height: "256px" }}
+            ></div>
+          )}
+        </div>
+      </div>
+      <div className="metrics">
+        <h3>Métricas</h3>
+        <div className="values">
+          <h4>MSE: {mse}</h4>
+          <h4>SSIM: {ssim}</h4>
+          <h4>PSNR: {psnr}</h4>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Calculator;
