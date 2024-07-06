@@ -131,7 +131,7 @@ const Calculator = () => {
 
     try {
       const imageResponse = await axios.post(
-        "http://127.0.0.1:5000/calculate",
+        "https://dct-compress-backend.onrender.com/calculate",
         {
           image: image.src_flask,
           amount_of_coeffs: amountOfCoeffs,
@@ -153,7 +153,7 @@ const Calculator = () => {
 
     try {
       const metricsResponse = await axios.post(
-        "http://127.0.0.1:5000/get_metrics",
+        "https://dct-compress-backend.onrender.com/get_metrics",
         {
           image: image.src_flask,
           amount_of_coeffs: amountOfCoeffs,
@@ -179,6 +179,13 @@ const Calculator = () => {
   //       console.error("Erro ao buscar dados:", error);
   //     });
   // }, []);
+
+  useEffect(() => {
+    fetch("https://dct-compress-backend.onrender.com/")
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error("Erro ao buscar dados:", error));
+  }, []);
 
   return (
     <div>
