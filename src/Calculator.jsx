@@ -7,7 +7,7 @@ const Calculator = () => {
   const images = [
     {
       name: "Barbara",
-      src: "/public/assets/barbara.jpg",
+      src: "/assets/barbara.jpg",
       src_flask: "./assets/barbara.jpg",
     },
     {
