@@ -12,42 +12,42 @@ const Calculator = () => {
     },
     {
       name: "Boat",
-      src: "/public/assets/boat.jpg",
+      src: "/assets/boat.jpg",
       src_flask: "./assets/boat.jpg",
     },
     {
       name: "Clock",
-      src: "/public/assets/clock.jpg",
+      src: "/assets/clock.jpg",
       src_flask: "./assets/clock.jpg",
     },
     {
       name: "Elaine",
-      src: "/public/assets/elaine.jpg",
+      src: "/assets/elaine.jpg",
       src_flask: "./assets/elaine.jpg",
     },
     {
       name: "Goldhill",
-      src: "/public/assets/goldhill.jpg",
+      src: "/assets/goldhill.jpg",
       src_flask: "./assets/goldhill.jpg",
     },
     {
       name: "Lena",
-      src: "/public/assets/lena.jpg",
+      src: "/assets/lena.jpg",
       src_flask: "./assets/lena.jpg",
     },
     {
       name: "Mandril",
-      src: "/public/assets/mandril.jpg",
+      src: "/assets/mandril.jpg",
       src_flask: "./assets/mandril.jpg",
     },
     {
       name: "Peppers",
-      src: "/public/assets/peppers.jpg",
+      src: "/assets/peppers.jpg",
       src_flask: "./assets/peppers.jpg",
     },
     {
       name: "Tiffany",
-      src: "/public/assets/tiffany.jpg",
+      src: "/assets/tiffany.jpg",
       src_flask: "./assets/tiffany.jpg",
     },
   ];
