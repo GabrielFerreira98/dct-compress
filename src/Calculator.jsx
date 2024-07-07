@@ -85,6 +85,10 @@ const Calculator = () => {
   const [ssim, setSsim] = useState("");
   const [psnr, setPsnr] = useState("");
 
+  const [mseDWT, setMseDWT] = useState("");
+  const [ssimDWT, setSsimDWT] = useState("");
+  const [psnrDWT, setPsnrDWT] = useState("");
+
   // Função para selecionar a imagem a sofrer compressão
 
   const handleImageChange = (event) => {
@@ -204,7 +208,21 @@ const Calculator = () => {
       );
       // Sucesso
       const imageUrl = URL.createObjectURL(imageResponse.data);
-      setCompressedImage(imageUrl);
+      setCompressedImageDWT(imageUrl);
+    } catch (error) {
+      console.error("Erro ao enviar a imagem:", error.message);
+    }
+
+    try {
+      const metricsResponse = await axios.post(
+        "https://dct-compress-backend.onrender.com/get_metrics_dwt",
+        {
+          image: imageDWT.src_flask,
+        }
+      );
+      setMseDWT(metricsResponse.data.mse.toFixed(2));
+      setSsimDWT(metricsResponse.data.ssim.toFixed(2));
+      setPsnrDWT(metricsResponse.data.psnr.toFixed(2));
     } catch (error) {
       console.error("Erro ao enviar a imagem:", error.message);
     }
@@ -344,9 +362,9 @@ const Calculator = () => {
       <div className="metrics">
         <h3>Métricas</h3>
         <div className="values">
-          <h4>MSE: </h4>
-          <h4>SSIM: </h4>
-          <h4>PSNR: </h4>
+          <h4>MSE: {mseDWT}</h4>
+          <h4>SSIM: {ssimDWT}</h4>
+          <h4>PSNR: {psnrDWT}</h4>
         </div>
       </div>
     </div>
