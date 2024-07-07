@@ -73,6 +73,15 @@ const Calculator = () => {
     { size: 256, label: "256x256" },
   ];
 
+  // Base de Dados de Tamanho de Bloco
+
+  const percentage = [
+    { size: 0.5, label: "0.5%" },
+    { size: 1, label: "1%" },
+    { size: 5, label: "5%" },
+    { size: 10, label: "10%" },
+  ];
+
   // Variáveis
 
   const [image, setImage] = useState(images[0]);
@@ -80,6 +89,9 @@ const Calculator = () => {
   const [imageDWT, setImageDWT] = useState(images[0]);
   const [compressedImageDWT, setCompressedImageDWT] = useState(null);
   const [amountOfCoeffs, setAmountOfCoeffs] = useState(coeffs[0].amount);
+  const [amountOfCoeffsPercentage, setAmountOfCoeffsPercentage] = useState(
+    percentage[0].size
+  );
   const [blockSize, setBlockSize] = useState(block_sizes[0].size);
   const [mse, setMse] = useState("");
   const [ssim, setSsim] = useState("");
@@ -113,6 +125,14 @@ const Calculator = () => {
       (coeff) => coeff.amount === selectedAmountOfCoeffs
     );
     setAmountOfCoeffs(selectedCoeffs.amount);
+  };
+
+  const handleKeepCoeffsChangePercentage = (event) => {
+    const selectedAmountOfCoeffsPercentage = parseInt(event.target.value);
+    const selectedCoeffs = percentage.find(
+      (percent) => percent.size === selectedAmountOfCoeffsPercentage
+    );
+    setAmountOfCoeffsPercentage(selectedCoeffs.size);
   };
 
   const handleBlockSizeChange = (event) => {
@@ -198,6 +218,7 @@ const Calculator = () => {
         "https://dct-compress-backend.onrender.com/calculate_dwt",
         {
           image: imageDWT.src_flask,
+          percentage: amountOfCoeffsPercentage,
         },
         {
           headers: {
@@ -328,10 +349,10 @@ const Calculator = () => {
         </div>
         <div className="image-selection">
           <p>Porcentagem de Coeficientes</p>
-          <select onChange={handleKeepCoeffsChange}>
-            {coeffs.map((coeff) => (
-              <option key={coeff.amount} value={coeff.amount}>
-                {coeff.amount}
+          <select onChange={handleKeepCoeffsChangePercentage}>
+            {percentage.map((percent) => (
+              <option key={percent.size} value={percent.size}>
+                {percent.label}
               </option>
             ))}
           </select>
