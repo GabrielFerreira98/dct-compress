@@ -239,6 +239,7 @@ const Calculator = () => {
         "https://dct-compress-backend.onrender.com/get_metrics_dwt",
         {
           image: imageDWT.src_flask,
+          percentage: amountOfCoeffsPercentage,
         }
       );
       setMseDWT(metricsResponse.data.mse.toFixed(2));
