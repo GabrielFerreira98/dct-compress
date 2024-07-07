@@ -77,6 +77,8 @@ const Calculator = () => {
 
   const [image, setImage] = useState(images[0]);
   const [compressedImage, setCompressedImage] = useState(null);
+  const [imageDWT, setImageDWT] = useState(images[0]);
+  const [compressedImageDWT, setCompressedImageDWT] = useState(null);
   const [amountOfCoeffs, setAmountOfCoeffs] = useState(coeffs[0].amount);
   const [blockSize, setBlockSize] = useState(block_sizes[0].size);
   const [mse, setMse] = useState("");
@@ -90,6 +92,13 @@ const Calculator = () => {
     const selectedImage = images.find((image) => image.name === selectedName);
     setCompressedImage("");
     setImage(selectedImage ? selectedImage : images[0]);
+  };
+
+  const handleImageChangeDWT = (event) => {
+    const selectedName = event.target.value;
+    const selectedImage = images.find((image) => image.name === selectedName);
+    setCompressedImageDWT("");
+    setImageDWT(selectedImage ? selectedImage : images[0]);
   };
 
   // Função para selecionar a quantidade de coeficientes a serem mantidos
@@ -169,16 +178,37 @@ const Calculator = () => {
     }
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://127.0.0.1:5000/api/test")
-  //     .then((response) => {
-  //       console.log(response.data.message);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Erro ao buscar dados:", error);
-  //     });
-  // }, []);
+  const handleSubmitDWT = async (event) => {
+    event.preventDefault();
+    if (!imageDWT) {
+      alert("Por favor, selecione uma imagem.");
+      return;
+    }
+
+    // ALGUMA VALIDAÇÃO
+
+    console.log(imageDWT);
+
+    try {
+      const imageResponse = await axios.post(
+        "https://dct-compress-backend.onrender.com/calculate_dwt",
+        {
+          image: image.src_flask,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          responseType: "blob",
+        }
+      );
+      // Sucesso
+      const imageUrl = URL.createObjectURL(imageResponse.data);
+      setCompressedImage(imageUrl);
+    } catch (error) {
+      console.error("Erro ao enviar a imagem:", error.message);
+    }
+  };
 
   useEffect(() => {
     fetch("https://dct-compress-backend.onrender.com/")
@@ -257,6 +287,66 @@ const Calculator = () => {
           <h4>MSE: {mse}</h4>
           <h4>SSIM: {ssim}</h4>
           <h4>PSNR: {psnr}</h4>
+        </div>
+      </div>
+
+      {/* HEADER */}
+      <h2 className="title">Transformada DWT</h2>
+      <h4 className="subheader">
+        Uma ferramenta para visualizar a ação da transformada DWT na compressão
+        de imagens!
+      </h4>
+
+      <form className="user-params">
+        <div className="image-selection">
+          <p>Selecione a imagem</p>
+          <select onChange={handleImageChangeDWT}>
+            {images.map((image) => (
+              <option key={image.name} value={image.name}>
+                {image.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="image-selection">
+          <p>Porcentagem de Coeficientes</p>
+          <select onChange={handleKeepCoeffsChange}>
+            {coeffs.map((coeff) => (
+              <option key={coeff.amount} value={coeff.amount}>
+                {coeff.amount}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="image-selection">
+          <p>Confirmar</p>
+          <button onClick={handleSubmitDWT}>Comprimir Imagem</button>
+        </div>
+      </form>
+
+      {/* PREVIEW */}
+      <div className="compress">
+        <div className="original">
+          <h4>Imagem Original</h4>
+          <img className="original-image" src={imageDWT.src} alt="" />
+        </div>
+        <div className="compressed">
+          <h4>Imagem com Compressão</h4>
+          {compressedImageDWT ? (
+            <img src={compressedImageDWT} alt="compressed-image" />
+          ) : (
+            <div
+              style={{ background: "#fafafa", width: "256px", height: "256px" }}
+            ></div>
+          )}
+        </div>
+      </div>
+      <div className="metrics">
+        <h3>Métricas</h3>
+        <div className="values">
+          <h4>MSE: </h4>
+          <h4>SSIM: </h4>
+          <h4>PSNR: </h4>
         </div>
       </div>
     </div>
