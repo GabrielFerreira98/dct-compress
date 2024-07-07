@@ -193,7 +193,7 @@ const Calculator = () => {
       const imageResponse = await axios.post(
         "https://dct-compress-backend.onrender.com/calculate_dwt",
         {
-          image: image.src_flask,
+          image: imageDWT.src_flask,
         },
         {
           headers: {
