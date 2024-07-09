@@ -73,14 +73,7 @@ const Calculator = () => {
     { size: 256, label: "256x256" },
   ];
 
-  // Base de Dados de Tamanho de Bloco
-
-  const percentage = [
-    { size: 0.5, label: "0.5%" },
-    { size: 1, label: "1%" },
-    { size: 5, label: "5%" },
-    { size: 10, label: "10%" },
-  ];
+  // Base de Dados de Bandas
 
   const bands = [
     { option: 1, label: "CA" },
@@ -248,7 +241,7 @@ const Calculator = () => {
         "https://dct-compress-backend.onrender.com/get_metrics_dwt",
         {
           image: imageDWT.src_flask,
-          percentage: amountOfCoeffsPercentage,
+          option: option,
         }
       );
       setMseDWT(metricsResponse.data.mse.toFixed(2));
