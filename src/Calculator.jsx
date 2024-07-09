@@ -82,6 +82,17 @@ const Calculator = () => {
     { size: 10, label: "10%" },
   ];
 
+  const bands = [
+    { option: 1, label: "CA" },
+    { option: 2, label: "CDH" },
+    { option: 3, label: "CDV" },
+    { option: 4, label: "CDD" },
+    { option: 5, label: "CA + CDH" },
+    { option: 6, label: "CA + CDV" },
+    { option: 7, label: "CA + CDD" },
+    { option: 8, label: "Todas Sub-bandas" },
+  ];
+
   // Variáveis
 
   const [image, setImage] = useState(images[0]);
@@ -89,9 +100,7 @@ const Calculator = () => {
   const [imageDWT, setImageDWT] = useState(images[0]);
   const [compressedImageDWT, setCompressedImageDWT] = useState(null);
   const [amountOfCoeffs, setAmountOfCoeffs] = useState(coeffs[0].amount);
-  const [amountOfCoeffsPercentage, setAmountOfCoeffsPercentage] = useState(
-    percentage[0].size
-  );
+  const [option, setOption] = useState(bands[0].option);
   const [blockSize, setBlockSize] = useState(block_sizes[0].size);
   const [mse, setMse] = useState("");
   const [ssim, setSsim] = useState("");
@@ -127,12 +136,12 @@ const Calculator = () => {
     setAmountOfCoeffs(selectedCoeffs.amount);
   };
 
-  const handleKeepCoeffsChangePercentage = (event) => {
-    const selectedAmountOfCoeffsPercentage = parseInt(event.target.value);
-    const selectedCoeffs = percentage.find(
-      (percent) => percent.size === selectedAmountOfCoeffsPercentage
+  const handleKeepOptionChange = (event) => {
+    const selectedOption = parseInt(event.target.value);
+    const selectedBandOption = bands.find(
+      (band) => band.option === selectedOption
     );
-    setAmountOfCoeffsPercentage(selectedCoeffs.size);
+    setOption(selectedBandOption.option);
   };
 
   const handleBlockSizeChange = (event) => {
@@ -218,7 +227,7 @@ const Calculator = () => {
         "https://dct-compress-backend.onrender.com/calculate_dwt",
         {
           image: imageDWT.src_flask,
-          percentage: amountOfCoeffsPercentage,
+          option: option,
         },
         {
           headers: {
@@ -349,11 +358,11 @@ const Calculator = () => {
           </select>
         </div>
         <div className="image-selection">
-          <p>Porcentagem de Coeficientes</p>
-          <select onChange={handleKeepCoeffsChangePercentage}>
-            {percentage.map((percent) => (
-              <option key={percent.size} value={percent.size}>
-                {percent.label}
+          <p>Sub-bandas</p>
+          <select onChange={handleKeepOptionChange}>
+            {bands.map((band) => (
+              <option key={band.option} value={band.option}>
+                {band.label}
               </option>
             ))}
           </select>
