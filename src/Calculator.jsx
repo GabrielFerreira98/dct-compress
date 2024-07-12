@@ -146,6 +146,7 @@ const Calculator = () => {
     const selectedBandOption = bands.find(
       (band) => band.option === selectedOption
     );
+    setCompressedImageDWT("");
     setOption(selectedBandOption.option);
   };
 
