@@ -76,14 +76,24 @@ const Calculator = () => {
   // Base de Dados de Bandas
 
   const bands = [
-    { option: 1, label: "CA" },
-    { option: 2, label: "CDH" },
-    { option: 3, label: "CDV" },
-    { option: 4, label: "CDD" },
-    { option: 5, label: "CA + CDH" },
-    { option: 6, label: "CA + CDV" },
-    { option: 7, label: "CA + CDD" },
-    { option: 8, label: "Todas Sub-bandas" },
+    { option: 1, level: 1, label: "Coef. de Aproximação" },
+    { option: 2, level: 1, label: "Coef. de Detalhe H" },
+    { option: 3, level: 1, label: "Coef. de Detalhe V" },
+    { option: 4, level: 1, label: "Coef. de Detalhe D" },
+    { option: 5, level: 1, label: "CA + CDH" },
+    { option: 6, level: 1, label: "CA + CDV" },
+    { option: 7, level: 1, label: "CA + CDD" },
+    { option: 8, level: 1, label: "Todas Sub-bandas" },
+    { option: 9, level: 2, label: "Coef. de Aproximação" },
+    { option: 10, level: 2, label: "CA + Coefs de Detalhe N2." },
+    { option: 11, level: 2, label: "Todas Sub-bandas" },
+  ];
+
+  // Quantidade de Níveis
+
+  const levels = [
+    { option: 1, label: "1 Nível" },
+    { option: 2, label: "2 Níveis" },
   ];
 
   // Variáveis
@@ -95,6 +105,8 @@ const Calculator = () => {
   const [amountOfCoeffs, setAmountOfCoeffs] = useState(coeffs[0].amount);
   const [option, setOption] = useState(bands[0].option);
   const [blockSize, setBlockSize] = useState(block_sizes[0].size);
+  const [level, setLevel] = useState(levels[0].option);
+
   const [mse, setMse] = useState("");
   const [ssim, setSsim] = useState("");
   const [psnr, setPsnr] = useState("");
@@ -135,6 +147,14 @@ const Calculator = () => {
       (band) => band.option === selectedOption
     );
     setOption(selectedBandOption.option);
+  };
+
+  const handleKeepLevelChange = (event) => {
+    const selectedOption = parseInt(event.target.value);
+    const selectedLevelOption = levels.find(
+      (level) => level.option === selectedOption
+    );
+    setLevel(selectedLevelOption.option);
   };
 
   const handleBlockSizeChange = (event) => {
@@ -221,6 +241,7 @@ const Calculator = () => {
         {
           image: imageDWT.src_flask,
           option: option,
+          level: level,
         },
         {
           headers: {
@@ -302,7 +323,7 @@ const Calculator = () => {
         </div>
         <div className="image-selection">
           <p>Confirmar</p>
-          <button onClick={handleSubmit}>Comprimir Imagem</button>
+          <button onClick={handleSubmit}>Confirmar</button>
         </div>
       </form>
 
@@ -351,18 +372,30 @@ const Calculator = () => {
           </select>
         </div>
         <div className="image-selection">
-          <p>Sub-bandas</p>
-          <select onChange={handleKeepOptionChange}>
-            {bands.map((band) => (
-              <option key={band.option} value={band.option}>
-                {band.label}
+          <p>Níveis</p>
+          <select onChange={handleKeepLevelChange}>
+            {levels.map((level) => (
+              <option key={level.option} value={level.option}>
+                {level.label}
               </option>
             ))}
           </select>
         </div>
         <div className="image-selection">
+          <p>Sub-bandas</p>
+          <select onChange={handleKeepOptionChange}>
+            {bands
+              .filter((band) => band.level === level)
+              .map((band) => (
+                <option key={band.option} value={band.option}>
+                  {band.label}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className="image-selection">
           <p>Confirmar</p>
-          <button onClick={handleSubmitDWT}>Comprimir Imagem</button>
+          <button onClick={handleSubmitDWT}>Confirmar</button>
         </div>
       </form>
 
