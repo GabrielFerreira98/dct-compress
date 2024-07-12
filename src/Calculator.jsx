@@ -154,6 +154,11 @@ const Calculator = () => {
     const selectedLevelOption = levels.find(
       (level) => level.option === selectedOption
     );
+    if (selectedLevelOption.option === 1) {
+      setOption(bands[0].option);
+    } else {
+      setOption(bands[8].option);
+    }
     setCompressedImageDWT("");
     setLevel(selectedLevelOption.option);
   };
