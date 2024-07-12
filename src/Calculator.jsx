@@ -263,6 +263,7 @@ const Calculator = () => {
         {
           image: imageDWT.src_flask,
           option: option,
+          level: level,
         }
       );
       setMseDWT(metricsResponse.data.mse.toFixed(2));
