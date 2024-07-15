@@ -4,7 +4,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: #fafafa; /* Cor do texto ajustada para #fafafa */
   background-color: #3b0764;
 
   font-synthesis: none;
@@ -15,11 +15,11 @@
 
 a {
   font-weight: 500;
-  color: white;
+  color: #fafafa; /* Cor do texto ajustada para #fafafa */
   text-decoration: inherit;
 }
 a:hover {
-  color: white;
+  color: #fafafa; /* Cor do texto ajustada para #fafafa */
 }
 
 body {
@@ -34,11 +34,13 @@ body {
 /* Aplica a cor de fundo a todos os elementos */
 * {
   background-color: #3b0764;
+  color: #fafafa; /* Cor do texto ajustada para #fafafa */
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: #fafafa; /* Cor do texto ajustada para #fafafa */
 }
 
 button {
@@ -51,6 +53,7 @@ button {
   background-color: #9b30ff;
   cursor: pointer;
   transition: border-color 0.25s;
+  color: #fafafa; /* Cor do texto ajustada para #fafafa */
 }
 button:hover {
   border-color: #646cff;
@@ -60,15 +63,20 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+select {
+  color: #fafafa; /* Cor do texto ajustada para #fafafa */
+}
+
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #fafafa; /* Cor do texto ajustada para #fafafa */
     background-color: #3b0764;
   }
   a:hover {
-    color: #747bff;
+    color: #fafafa; /* Cor do texto ajustada para #fafafa */
   }
   button {
     background-color: #f9f9f9;
+    color: #fafafa; /* Cor do texto ajustada para #fafafa */
   }
 }
