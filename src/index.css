@@ -66,17 +66,3 @@ button:focus-visible {
 select {
   color: #fafafa; /* Cor do texto ajustada para #fafafa */
 }
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #fafafa; /* Cor do texto ajustada para #fafafa */
-    background-color: #3b0764;
-  }
-  a:hover {
-    color: #fafafa; /* Cor do texto ajustada para #fafafa */
-  }
-  button {
-    background-color: #f9f9f9;
-    color: #fafafa; /* Cor do texto ajustada para #fafafa */
-  }
-}
